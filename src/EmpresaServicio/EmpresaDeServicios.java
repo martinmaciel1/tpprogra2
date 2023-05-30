@@ -27,6 +27,12 @@ public class EmpresaDeServicios {
         registroClientes = new HashMap<Integer, Cliente>();
         registroServicios = new HashMap<Integer, RegistroServicio>();
         registroDeServiciosDisponibles = new HashSet<String>();
+        registroDeServiciosDisponibles.add("GasistaInstalacion");
+        registroDeServiciosDisponibles.add("GasistaRevision");
+        registroDeServiciosDisponibles.add("Pintura");
+        registroDeServiciosDisponibles.add("PinturaEnAltura");
+        registroDeServiciosDisponibles.add("Electricidad");
+
     }
 
     /**
