@@ -1,6 +1,7 @@
 package EmpresaServicio;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -23,6 +24,13 @@ public class EmpresaDeServicios {
         registroEspecialistas = new HashMap<Integer, Especialista>();
         registroClientes = new HashMap<Integer, Cliente>();
         registroServicios = new HashMap<Integer, RegistroServicio>();
+        registroDeServiciosDisponibles = new HashSet<String>();
+        registroDeServiciosDisponibles.add("GasistaInstalacion");
+        registroDeServiciosDisponibles.add("GasistaRevision");
+        registroDeServiciosDisponibles.add("Pintura");
+        registroDeServiciosDisponibles.add("PinturaEnAltura");
+        registroDeServiciosDisponibles.add("Electricidad");
+
     }
     /**
      * Registra un nuevo cliente en el sistema dado su:
