@@ -7,8 +7,8 @@ public class ServicioPinturaEnAltura extends ServicioPintura{
     private final double costoSeguro;
     private final int altura;
 
-    public ServicioPinturaEnAltura(Cliente cliente, Especialista especialista, String domicilio, int mtrsCuadrados, int altura) {
-        super(cliente, especialista, domicilio, mtrsCuadrados);
+    public ServicioPinturaEnAltura(Cliente cliente, Especialista especialista, String domicilio, int mtrsCuadrados, double precioMtrCuadrado, int altura) {
+        super(cliente, especialista, domicilio, mtrsCuadrados, precioMtrCuadrado);
         alquilerAndamios = 500;
         costoSeguro = 1500;
         this.altura = altura;
