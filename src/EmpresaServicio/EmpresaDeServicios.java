@@ -1,6 +1,7 @@
 package EmpresaServicio;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -8,6 +9,7 @@ import persona.Cliente;
 import persona.Especialista;
 import servicio.RegistroServicio;
 import servicio.ServicioElectricista;
+import servicio.ServicioPintura;
 
 //import servicio.ServicioGasistaReparacion;
 //import servicio.ServicioGasistaRevision;
@@ -19,11 +21,14 @@ public class EmpresaDeServicios {
     private HashMap<Integer, RegistroServicio> registroServicios;
 
     private Set<String> registroDeServiciosDisponibles;
+
     public EmpresaDeServicios() {
         registroEspecialistas = new HashMap<Integer, Especialista>();
         registroClientes = new HashMap<Integer, Cliente>();
         registroServicios = new HashMap<Integer, RegistroServicio>();
+        registroDeServiciosDisponibles = new HashSet<String>();
     }
+
     /**
      * Registra un nuevo cliente en el sistema dado su:
      * - dni,
@@ -35,8 +40,7 @@ public class EmpresaDeServicios {
      */
     public void registrarCliente(int dni, String nombre, String telefono) {
         Cliente nuevoCliente = new Cliente(dni, nombre, telefono);
-        if (clienteYaExiste(nuevoCliente.consultarDNI()))
-            throw new RuntimeException("el cliente ya existe");
+        if (clienteYaExiste(nuevoCliente.consultarDNI())) throw new RuntimeException("el cliente ya existe");
         registroClientes.put(nuevoCliente.consultarDNI(), nuevoCliente);
 
     }
@@ -56,15 +60,15 @@ public class EmpresaDeServicios {
      * se debe generar una excepción.
      */
     public void registrarEspecialista(int nroEspecialista, String nombre, String telefono, String especialidad) {
-        Especialista nuevoEspecialista = new Especialista(nroEspecialista,nombre,telefono,especialidad);
-        if (especialistaYaExiste(nuevoEspecialista.consultarNumEspecialista())){
+        Especialista nuevoEspecialista = new Especialista(nroEspecialista, nombre, telefono, especialidad);
+        if (especialistaYaExiste(nuevoEspecialista.consultarNumEspecialista())) {
             throw new RuntimeException("el especialista ya existe");
         }
-        registroEspecialistas.put(nuevoEspecialista.consultarNumEspecialista(),nuevoEspecialista);
+        registroEspecialistas.put(nuevoEspecialista.consultarNumEspecialista(), nuevoEspecialista);
     }
 
     private boolean especialistaYaExiste(int NumEspecialista) {
-        return  (registroEspecialistas.containsKey(NumEspecialista));
+        return (registroEspecialistas.containsKey(NumEspecialista));
     }
 
     /**
@@ -83,48 +87,29 @@ public class EmpresaDeServicios {
      * iguales a 0, se debe generar una excepción.
      */
     public int solicitarServicioElectricidad(int dni, int nroEspecialista, String direccion, double precioPorHora, int horasTrabajadas) {
-        //hacer codigo unico para el servicio y que lo devuelta;
-        //  Cliente cliente = BuscarCliente(dni);
-        //   Especialista especialista= BuscarEspecialista(nroEspecialista);
-        if (precioPorHora <= 0) {
-            throw new RuntimeException("El precio hora no puede ser menos i igual a 0");
-        }
-        if (horasTrabajadas <= 0) {
-            throw new RuntimeException("el estimado de horas trabajadas no puede ser menor o igual a 0");
-        }
-
-        //   ServicioElectricista servicio = new ServicioElectricista(cliente,especialista,direccion,precioPorHora,horasTrabajadas);
-        //  registroServicios.put(cliente.consultarDNI(), servicio); // porque recibe el dni de cliente ??
+        Cliente cliente = buscarCliente(dni);
+        Especialista especialista = buscarEspecialista(nroEspecialista);
+        if (especialista.consultarEspecialidad().equalsIgnoreCase("electricista"))
+            throw new RuntimeException("el especialista no esta capacitado para este servicio, su servicio es: " + especialista.consultarEspecialidad());
+        if (precioPorHora <= 0) throw new RuntimeException("el precio hora no puede ser menor o igual a 0");
+        if (horasTrabajadas <= 0) throw new RuntimeException("las horas trabajadas no pueden ser menor o igual a 0");
+        ServicioElectricista Servicio = new ServicioElectricista(cliente, especialista, direccion, precioPorHora, horasTrabajadas);
         return 0;
     }
- /*   private Especialista BuscarEspecialista(int nroEspecialista) {
-        Especialista especialista= null;
-        for (Map.Entry<Integer, Especialista> entry : registroEspecialistas.entrySet()) {
-            if (entry.getKey() != nroEspecialista){
-                throw  new RuntimeException("el especialista no esta registrado");
-            }
-            if (entry.getKey() == nroEspecialista){
-                especialista = entry.getValue();
-                if (especialista.consultarEspecialidad().equalsIgnoreCase("electricista")){
-                    throw new RuntimeException("el especialista no es esta capacitado para este trabajo");
-                }
-            }
+
+    private Especialista buscarEspecialista(int nroEspecialista) {
+        if (registroEspecialistas.containsKey(nroEspecialista)) {
+            return registroEspecialistas.get(nroEspecialista);
         }
-        return especialista;
+        throw new RuntimeException("el especialista no esta registrado");
     }
 
-    private Cliente BuscarCliente(int dni) {
-        Cliente cliente= null;
-        for (Map.Entry<Integer, Cliente> entry : registroClientes.entrySet()) {
-            if (entry.getKey() != dni) {
-                throw new RuntimeException("el cliente no esta registrado");
-            }else{
-                cliente = entry.getValue();
-            }
+    private Cliente buscarCliente(int dni) {
+        if (registroClientes.containsKey(dni)) {
+            return registroClientes.get(dni);
         }
-        return cliente;
+        throw new RuntimeException("el cliente no esta registrado");
     }
-*/
 
     /**
      * Se registra la prestación de un servicio de tipo Pintura en el sistema
@@ -142,9 +127,16 @@ public class EmpresaDeServicios {
      * iguales a 0, se debe generar una excepción.
      * 5 de 7
      */
-    public int solicitarServicioPintura(int dni, int nroEspecialista,
-                                        String direccion, int metrosCuadrados,
-                                        double precioPorMetroCuadrado) {
+    public int solicitarServicioPintura(int dni, int nroEspecialista, String direccion, int metrosCuadrados, double precioPorMetroCuadrado) {
+        Cliente cliente = buscarCliente(dni);
+        Especialista especialista= buscarEspecialista(nroEspecialista);
+        if(especialista.consultarEspecialidad().equalsIgnoreCase("pintura"))
+            throw new RuntimeException("el especialista no esta capacitado para este servicio, su servicio es: " + especialista.consultarEspecialidad());
+        if (metrosCuadrados <= 0)
+            throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
+        if (precioPorMetroCuadrado <= 0)
+            throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
+        ServicioPintura Servicio = new ServicioPintura(cliente,especialista,direccion,metrosCuadrados,precioPorMetroCuadrado);
         return 0;
     }
 
@@ -167,10 +159,8 @@ public class EmpresaDeServicios {
      * del seguro o el costo del alquiler de los andamios son menores o iguales a 0,
      * se debe generar una excepción.
      */
-    public int solicitarServicioPintura(int dni, int nroEspecialista,
-                                        String direccion, int metrosCuadrados,
-                                        double precioPorMetroCuadrado, int piso,
-                                        double seguro, double alqAndamios) {
+    public int solicitarServicioPintura(int dni, int nroEspecialista, String direccion, int metrosCuadrados, double precioPorMetroCuadrado, int piso, double seguro, double alqAndamios) {
+
         return 0;
     }
 
@@ -189,9 +179,7 @@ public class EmpresaDeServicios {
      * Si el precio de instalación o la cantidad de artefactos a instalar son
      * menores o iguales a 0, se debe generar una excepción.
      */
-    public int solicitarServicioGasistaInstalacion(int dni, int nroEspecialista,
-                                                   String direccion, int cantArtefactos,
-                                                   double precioPorArtefacto) {
+    public int solicitarServicioGasistaInstalacion(int dni, int nroEspecialista, String direccion, int cantArtefactos, double precioPorArtefacto) {
         return 0;
     }
 
@@ -212,9 +200,7 @@ public class EmpresaDeServicios {
      * Si el precio de instalación o la cantidad de artefactos a revisar son
      * menores o iguales a 0, se debe generar una excepción.
      */
-    public int solicitarServicioGasistaRevision(int dni, int nroEspecialista,
-                                                String direccion, int cantArtefactos,
-                                                double precioPorArtefacto) {
+    public int solicitarServicioGasistaRevision(int dni, int nroEspecialista, String direccion, int cantArtefactos, double precioPorArtefacto) {
         return 0;
     }
 

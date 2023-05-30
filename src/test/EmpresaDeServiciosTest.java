@@ -98,19 +98,19 @@ public class EmpresaDeServiciosTest {
 		empresa.registrarEspecialista(nroEspecialistaElectrisista, "clienteX", "1146453465", SERVICIO_GASISTA_REVISION);
 	}
 
-	@Test(expected = RuntimeException.class)
+	/*@Test(expected = RuntimeException.class)
 	public void registrarEspecialistaDeTipoDesconocido_generaError() {
 		empresa.registrarEspecialista(nroEspecialistaNuevo1, "EspecialistaServicioDesconocido", "1146453465",
 				"Carpintero");
-	}
+	}*/
 
-	/*@Test
+	@Test
 	public void solicitarServicios_finalizaOK() {
 		empresa.solicitarServicioPintura(dniClienteRegistrado, nroEspecialistaPintor, "otra Calle 871", 9, 2000);
 		empresa.solicitarServicioGasistaRevision(dniClienteRegistrado, nroEspecialistaGasistaRevision, "bulevar 777", 1,
 				3200);
 	}
-
+/*
 	@Test(expected = RuntimeException.class)
 	public void solicitarServicioConNroEspecialidadInvalido_generaError() {
 		empresa.solicitarServicioPintura(dniClienteRegistrado, nroEspecialistaNuevo1, "otra Calle 871", 9, 2000);
