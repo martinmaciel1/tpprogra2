@@ -9,6 +9,7 @@ import persona.Cliente;
 import persona.Especialista;
 import servicio.RegistroServicio;
 import servicio.ServicioElectricista;
+import servicio.ServicioGasistaRevision;
 import servicio.ServicioPintura;
 
 //import servicio.ServicioGasistaReparacion;
@@ -95,7 +96,7 @@ public class EmpresaDeServicios {
     public int solicitarServicioElectricidad(int dni, int nroEspecialista, String direccion, double precioPorHora, int horasTrabajadas) {
         Cliente cliente = buscarCliente(dni);
         Especialista especialista = buscarEspecialista(nroEspecialista);
-        if (especialista.consultarEspecialidad().equalsIgnoreCase("electricista"))
+        if (!especialista.consultarEspecialidad().equalsIgnoreCase("electricista"))
             throw new RuntimeException("el especialista no esta capacitado para este servicio, su servicio es: " + especialista.consultarEspecialidad());
         if (precioPorHora <= 0) throw new RuntimeException("el precio hora no puede ser menor o igual a 0");
         if (horasTrabajadas <= 0) throw new RuntimeException("las horas trabajadas no pueden ser menor o igual a 0");
@@ -136,7 +137,7 @@ public class EmpresaDeServicios {
     public int solicitarServicioPintura(int dni, int nroEspecialista, String direccion, int metrosCuadrados, double precioPorMetroCuadrado) {
         Cliente cliente = buscarCliente(dni);
         Especialista especialista= buscarEspecialista(nroEspecialista);
-        if(especialista.consultarEspecialidad().equalsIgnoreCase("pintura"))
+        if(!especialista.consultarEspecialidad().equalsIgnoreCase("Pintura"))
             throw new RuntimeException("el especialista no esta capacitado para este servicio, su servicio es: " + especialista.consultarEspecialidad());
         if (metrosCuadrados <= 0)
             throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
@@ -207,6 +208,15 @@ public class EmpresaDeServicios {
      * menores o iguales a 0, se debe generar una excepción.
      */
     public int solicitarServicioGasistaRevision(int dni, int nroEspecialista, String direccion, int cantArtefactos, double precioPorArtefacto) {
+        Cliente cliente = buscarCliente(dni);
+        Especialista especialista= buscarEspecialista(nroEspecialista);
+        if(!especialista.consultarEspecialidad().equalsIgnoreCase("GasistaRevision"))
+            throw new RuntimeException("el especialista no esta capacitado para este servicio, su servicio es: " + especialista.consultarEspecialidad());
+        if (cantArtefactos <= 0)
+            throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
+        if (precioPorArtefacto <= 0)
+            throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
+        ServicioGasistaRevision Servicio = new ServicioGasistaRevision(cliente,especialista,direccion,cantArtefactos);
         return 0;
     }
 
