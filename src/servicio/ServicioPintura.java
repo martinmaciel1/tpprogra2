@@ -1,4 +1,5 @@
 package servicio;
+
 import persona.Cliente;
 import persona.Especialista;
 
@@ -12,6 +13,7 @@ public class ServicioPintura extends RegistroServicio {
         super(cliente, especialista, domicilio);
         this.mtrsCuadrados = mtrsCuadrados;
         this.precioMtrCuadrado = precioMtrCuadrado;
+
     }
 
     public int consultarMtrsCuadrados() {
