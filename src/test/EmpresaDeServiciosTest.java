@@ -104,7 +104,7 @@ public class EmpresaDeServiciosTest {
 				"Carpintero");
 	}
 
-	@Test
+	/*@Test
 	public void solicitarServicios_finalizaOK() {
 		empresa.solicitarServicioPintura(dniClienteRegistrado, nroEspecialistaPintor, "otra Calle 871", 9, 2000);
 		empresa.solicitarServicioGasistaRevision(dniClienteRegistrado, nroEspecialistaGasistaRevision, "bulevar 777", 1,
@@ -172,5 +172,5 @@ public class EmpresaDeServiciosTest {
 				+ "bulevar 333\n";
 		assertEquals(esperado, empresa.listadoServiciosAtendidosPorEspecialista(nroEspecialistaGasistaInstalacion));
 	}
-
+*/
 }

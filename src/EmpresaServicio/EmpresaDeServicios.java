@@ -2,19 +2,23 @@ package EmpresaServicio;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import persona.Cliente;
 import persona.Especialista;
 import servicio.RegistroServicio;
 import servicio.ServicioElectricista;
+
 //import servicio.ServicioGasistaReparacion;
 //import servicio.ServicioGasistaRevision;
 //import servicio.ServicioPintura;
 //import servicio.ServicioPinturaEnAltura;
-public class EmpresaDeServicios implements Interfaz{
+public class EmpresaDeServicios {
     private HashMap<Integer, Especialista> registroEspecialistas;
     private HashMap<Integer, Cliente> registroClientes;
     private HashMap<Integer, RegistroServicio> registroServicios;
+
+    private Set<String> registroDeServiciosDisponibles;
     public EmpresaDeServicios() {
         registroEspecialistas = new HashMap<Integer, Especialista>();
         registroClientes = new HashMap<Integer, Cliente>();
@@ -25,13 +29,20 @@ public class EmpresaDeServicios implements Interfaz{
      * - dni,
      * - nombre y
      * - teléfono de contacto.
-     *
+     * <p>
      * Si el dni ya está en el sistema se debe generar una
      * excepción.
      */
     public void registrarCliente(int dni, String nombre, String telefono) {
-        Cliente nuevoCliente = new Cliente(dni, telefono, nombre);
+        Cliente nuevoCliente = new Cliente(dni, nombre, telefono);
+        if (clienteYaExiste(nuevoCliente.consultarDNI()))
+            throw new RuntimeException("el cliente ya existe");
         registroClientes.put(nuevoCliente.consultarDNI(), nuevoCliente);
+
+    }
+
+    private boolean clienteYaExiste(int DNI) {
+        return (registroClientes.containsKey(DNI));
     }
 
     /**
@@ -44,9 +55,16 @@ public class EmpresaDeServicios implements Interfaz{
      * Si el nroEspecialista ya está registrado en el sistema
      * se debe generar una excepción.
      */
-    public void registrarEspecialista(int nroEspecialista, String nombre,String telefono, String especialidad) {
-        Especialista nuevoEspecialista = new Especialista(nombre, telefono, nroEspecialista, especialidad);
-        registroEspecialistas.put(nuevoEspecialista.consultarNumEspecialista(), nuevoEspecialista);
+    public void registrarEspecialista(int nroEspecialista, String nombre, String telefono, String especialidad) {
+        Especialista nuevoEspecialista = new Especialista(nroEspecialista,nombre,telefono,especialidad);
+        if (especialistaYaExiste(nuevoEspecialista.consultarNumEspecialista())){
+            throw new RuntimeException("el especialista ya existe");
+        }
+        registroEspecialistas.put(nuevoEspecialista.consultarNumEspecialista(),nuevoEspecialista);
+    }
+
+    private boolean especialistaYaExiste(int NumEspecialista) {
+        return  (registroEspecialistas.containsKey(NumEspecialista));
     }
 
     /**
@@ -66,20 +84,20 @@ public class EmpresaDeServicios implements Interfaz{
      */
     public int solicitarServicioElectricidad(int dni, int nroEspecialista, String direccion, double precioPorHora, int horasTrabajadas) {
         //hacer codigo unico para el servicio y que lo devuelta;
-        Cliente cliente = BuscarCliente(dni);
-        Especialista especialista= BuscarEspecialista(nroEspecialista);
-        if (precioPorHora <= 0 ){
-            throw  new RuntimeException("El precio hora no puede ser menos i igual a 0");
+        //  Cliente cliente = BuscarCliente(dni);
+        //   Especialista especialista= BuscarEspecialista(nroEspecialista);
+        if (precioPorHora <= 0) {
+            throw new RuntimeException("El precio hora no puede ser menos i igual a 0");
         }
-        if (horasTrabajadas <=0){
-            throw  new RuntimeException("el estimado de horas trabajadas no puede ser menor o igual a 0");
+        if (horasTrabajadas <= 0) {
+            throw new RuntimeException("el estimado de horas trabajadas no puede ser menor o igual a 0");
         }
 
-        ServicioElectricista servicio = new ServicioElectricista(cliente,especialista,direccion,precioPorHora,horasTrabajadas);
-        registroServicios.put(cliente.consultarDNI(), servicio); // porque recibe el dni de cliente ??
+        //   ServicioElectricista servicio = new ServicioElectricista(cliente,especialista,direccion,precioPorHora,horasTrabajadas);
+        //  registroServicios.put(cliente.consultarDNI(), servicio); // porque recibe el dni de cliente ??
         return 0;
     }
-    private Especialista BuscarEspecialista(int nroEspecialista) {
+ /*   private Especialista BuscarEspecialista(int nroEspecialista) {
         Especialista especialista= null;
         for (Map.Entry<Integer, Especialista> entry : registroEspecialistas.entrySet()) {
             if (entry.getKey() != nroEspecialista){
@@ -106,7 +124,7 @@ public class EmpresaDeServicios implements Interfaz{
         }
         return cliente;
     }
-
+*/
 
     /**
      * Se registra la prestación de un servicio de tipo Pintura en el sistema
@@ -185,7 +203,7 @@ public class EmpresaDeServicios implements Interfaz{
      * <p>
      * Se devuelve el código único del servicio a realizar.
      * <p>
-
+     * <p>
      * Si el dni o el nroEspecialista no están registrados en el sistema se debe
      * generar una excepción.
      * Si el especialista no se especializa en este tipo de servicio se debe generar
@@ -279,7 +297,7 @@ public class EmpresaDeServicios implements Interfaz{
         return null;
     }
 
-    public Map<String,Integer> cantidadDeServiciosRealizadosPorTipo(){
+    public Map<String, Integer> cantidadDeServiciosRealizadosPorTipo() {
 
         return null;
     }

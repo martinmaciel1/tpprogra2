@@ -5,12 +5,12 @@ import persona.Cliente;
 import persona.Especialista;
 public abstract class RegistroServicio {
 
-        private Cliente cliente;
-        private Especialista especialista;
-        private Date horaInicio;
-        private Date horaFinal;
-        private String domicilio;
-        private double importeTotal;
+    private Cliente cliente;
+    private Especialista especialista;
+    private Date horaInicio;
+    private Date horaFinal;
+    private String domicilio;
+    private double importeTotal;
 
         public RegistroServicio(Cliente cliente, Especialista especialista, String domicilio) {
             this.cliente = cliente;
@@ -20,6 +20,7 @@ public abstract class RegistroServicio {
 
         public Cliente consultarCliente() {
             return cliente;
+
         }
 
         public Especialista consultarEspecialista() {
