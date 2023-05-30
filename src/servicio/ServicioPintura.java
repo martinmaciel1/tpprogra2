@@ -5,20 +5,20 @@ import persona.Especialista;
 public class ServicioPintura extends RegistroServicio {
 
     private int mtrsCuadrados;
-    private final double costoMtrCuadrado;
+    private final double precioMtrCuadrado;
 
     public ServicioPintura(Cliente cliente, Especialista especialista,
-                           String domicilio, int mtrsCuadrados) {
+                           String domicilio, int mtrsCuadrados, double precioMtrCuadrado) {
         super(cliente, especialista, domicilio);
         this.mtrsCuadrados = mtrsCuadrados;
-        costoMtrCuadrado = 250;
+        this.precioMtrCuadrado = precioMtrCuadrado;
     }
 
     public int consultarMtrsCuadrados() {
         return mtrsCuadrados;
     }
 
-    public double consultarCostoMtrCuadrado() {
-        return costoMtrCuadrado;
+    public double consultarPrecioMtrCuadrado() {
+        return precioMtrCuadrado;
     }
 }
