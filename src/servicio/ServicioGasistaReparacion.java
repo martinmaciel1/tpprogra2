@@ -4,15 +4,15 @@ import persona.Especialista;
 
 public class ServicioGasistaReparacion extends ServicioGasista {
 
-    private final double costoReparacion;
+    private double precioPorArtefacto;
 
-    public ServicioGasistaReparacion(Cliente cliente, Especialista especialista, String domicilio, int cantArtefactos) {
+    public ServicioGasistaReparacion(Cliente cliente, Especialista especialista, String domicilio, int cantArtefactos, int precioPorArtefacto) {
         super(cliente, especialista, domicilio, cantArtefactos);
-        costoReparacion = 2000;
+        this.precioPorArtefacto = precioPorArtefacto;
     }
 
-    public double consultarCostoReparacion() {
-        return costoReparacion;
+    public double PrecioPorArtefacto() {
+        return precioPorArtefacto;
     }
 
 }
