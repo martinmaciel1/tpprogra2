@@ -26,4 +26,8 @@ public class ServicioPinturaEnAltura extends ServicioPintura{
         return altura;
     }
 
+    public boolean esMayorA5(){
+        return altura > 5;
+    }
+
 }
