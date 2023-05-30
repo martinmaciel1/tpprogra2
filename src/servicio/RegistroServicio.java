@@ -1,6 +1,5 @@
 package servicio;
 import java.util.Date;
-
 import persona.Cliente;
 import persona.Especialista;
 public abstract class RegistroServicio {
