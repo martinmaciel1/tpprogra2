@@ -1,5 +1,4 @@
 package servicio;
-
 import persona.Cliente;
 import persona.Especialista;
 public class ServicioElectricista extends RegistroServicio {
