@@ -5,13 +5,21 @@ import persona.Especialista;
 
 public class ServicioElectricista extends RegistroServicio {
 
-    private int cantHoras;
-    private double precioHoras;
+    protected int cantHoras;
+    protected double precioHoras;
 
-    public ServicioElectricista(Cliente cliente, Especialista especialista, String domicilio, double precioHoras, int cantHorasTrabajadas) {
+    public ServicioElectricista(Cliente cliente, Especialista especialista, String domicilio, double precioHoras,
+                                int cantHorasTrabajadas) {
         super(cliente, especialista, domicilio);
         this.precioHoras = precioHoras;
         this.cantHoras = cantHorasTrabajadas;
+    }
+
+    @Override
+    public double calcularCostoServicio() {
+        double preciofinal = precioHoras*cantHoras;
+        super.importeTotal= preciofinal;
+        return preciofinal;
     }
 
     public int consultarCantHoras() {

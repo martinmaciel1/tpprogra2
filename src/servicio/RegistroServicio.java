@@ -1,7 +1,5 @@
 package servicio;
 
-import java.util.Date;
-
 import persona.Cliente;
 import persona.Especialista;
 
@@ -10,7 +8,8 @@ public abstract class RegistroServicio {
     private Cliente cliente;
     private Especialista especialista;
     private String direccion;
-    private double importeTotal;
+
+    protected double importeTotal;
 
     public RegistroServicio(Cliente cliente, Especialista especialista, String domicilio) {
         this.cliente = cliente;
@@ -18,16 +17,23 @@ public abstract class RegistroServicio {
         this.direccion = domicilio;
     }
 
+    public double calcularCostoServicio() {
+        return 0;
+    }
+
     public String consultarDireccion() {
         return direccion;
     }
-    public boolean servicioTerminado(){
+
+    public boolean servicioTerminado() {
         return importeTotal != 0;
     }
+
     public double consultarImporteTotal() {
         return importeTotal;
     }
-    public void cambiarResponsable(Especialista especialista){
+
+    public void cambiarResponsable(Especialista especialista) {
         this.especialista = especialista;
     }
 

@@ -5,7 +5,7 @@ import persona.Especialista;
 
 public class ServicioGasista extends RegistroServicio {
 
-    private int cantArtefactos;
+    protected int cantArtefactos;
 
     public ServicioGasista(Cliente cliente, Especialista especialista, String domicilio, int cantArtefactos) {
         super(cliente, especialista, domicilio);
@@ -15,5 +15,6 @@ public class ServicioGasista extends RegistroServicio {
     public int consultarCantArtefactos() {
         return cantArtefactos;
     }
+
 
 }

@@ -272,9 +272,12 @@ public class EmpresaDeServicios {
      * Se debe realizar esta operación en O(1).
      */
     public double finalizarServicio(int codServicio, double costoMateriales) {
+        RegistroServicio servicio = buscarServicio(codServicio);
 
-        return 0;
+        double precioServicio = servicio.consultarImporteTotal();
+        return precioServicio+costoMateriales;
     } // En O 0
+
     private RegistroServicio buscarServicio(int codServicio){
         if (registroServicios.containsKey(codServicio)){
             return registroServicios.get(codServicio);
@@ -287,9 +290,9 @@ public class EmpresaDeServicios {
      * Si un tipo de servicio no tuvo ninguna demanda, el valor de esa entrada debe
      * ser 0.
      */
-    public Map<String, Integer> cantidadDeServiciosRealizadosPorTipo() {
+    /*public Map<String, Integer> cantidadDeServiciosRealizadosPorTipo() {
         return null;
-    }
+    }*/
 
 
 

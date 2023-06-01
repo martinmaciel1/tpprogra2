@@ -4,9 +4,9 @@ import persona.Cliente;
 import persona.Especialista;
 
 public class ServicioPinturaEnAltura extends ServicioPintura {
-    private double alquilerAndamios;
-    private double costoSeguro;
-    private int piso;
+    protected double alquilerAndamios;
+    protected double costoSeguro;
+    protected int piso;
 
     public ServicioPinturaEnAltura(Cliente cliente, Especialista especialista, String domicilio, int mtrsCuadrados, double precioMtrCuadrado, int piso, double seguro, double alqAndamios) {
         super(cliente, especialista, domicilio, mtrsCuadrados, precioMtrCuadrado);
@@ -15,7 +15,12 @@ public class ServicioPinturaEnAltura extends ServicioPintura {
         this.piso = piso;
 
     }
-
+    @Override
+    public double calcularCostoServicio() {  // faltan descuentos correspondientes
+        double preciofinal = (super.mtrsCuadrados*super.precioMtrCuadrado)+costoSeguro+alquilerAndamios;
+        super.importeTotal= preciofinal;
+        return preciofinal;
+    }
     public double consultarAlguilerAndamios() {
         return alquilerAndamios;
     }
