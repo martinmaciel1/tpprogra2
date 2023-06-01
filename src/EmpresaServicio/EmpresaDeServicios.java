@@ -1,8 +1,6 @@
 package EmpresaServicio;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import persona.Cliente;
@@ -22,6 +20,7 @@ public class EmpresaDeServicios {
     private double facturacionElectricidadRevision;
     private double facturacionElectricidadInstalacion;
 
+    private int proximoIdServicio ;
     public EmpresaDeServicios() {
         registroEspecialistas = new HashMap<Integer, Especialista>();
         registroClientes = new HashMap<Integer, Cliente>();
@@ -37,9 +36,12 @@ public class EmpresaDeServicios {
         facturacionElectricidad = 0;
         facturacionElectricidadRevision = 0;
         facturacionElectricidadInstalacion = 0;
-
+        proximoIdServicio = 0;
     }
-
+    private int generarCodigoUnico(){
+        proximoIdServicio++;
+        return proximoIdServicio;
+    }
     /**
      * Registra un nuevo cliente en el sistema dado su:
      * - dni,
@@ -117,17 +119,10 @@ public class EmpresaDeServicios {
             throw new RuntimeException("el especialista no esta capacitado para este servicio, su servicio es: " + especialista.consultarEspecialidad());
         if (precioPorHora <= 0) throw new RuntimeException("el precio hora no puede ser menor o igual a 0");
         if (horasTrabajadas <= 0) throw new RuntimeException("las horas trabajadas no pueden ser menor o igual a 0");
-        String codigoUnico = GenerarCodigoUnico(3);
+        int codigoUnico = generarCodigoUnico();
         ServicioElectricista Servicio = new ServicioElectricista(cliente, especialista, direccion, precioPorHora, horasTrabajadas);
-        registroServicios.put(codigoUnico,Servicio);
-        return ;
-    }
-
-    private String GenerarCodigoUnico(int servicio){
-        LocalDateTime fecha = LocalDateTime.now();
-        StringBuilder a = new StringBuilder();
-        a.append(codigoServicio).append(fecha.hashCode());
-        return String.valueOf(a);
+        registroServicios.put(codigoUnico,servicio);
+        return codigoUnico ;
     }
 
 
@@ -156,8 +151,10 @@ public class EmpresaDeServicios {
             throw new RuntimeException("el especialista no esta capacitado para este servicio, su servicio es: " + especialista.consultarEspecialidad());
         if (metrosCuadrados <= 0) throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
         if (precioPorMetroCuadrado <= 0) throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
-        ServicioPintura Servicio = new ServicioPintura(cliente, especialista, direccion, metrosCuadrados, precioPorMetroCuadrado);
-        return 0;
+        int codigoUnico = generarCodigoUnico();
+        ServicioPintura servicio = new ServicioPintura(cliente, especialista, direccion, metrosCuadrados, precioPorMetroCuadrado);
+        registroServicios.put(codigoUnico,servicio);
+        return codigoUnico;
     }
     //2
     /**
@@ -189,8 +186,10 @@ public class EmpresaDeServicios {
         if (piso <= 0) throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
         if (seguro <= 0) throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
         if (alqAndamios <= 0) throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
-        ServicioPinturaEnAltura Servicio = new ServicioPinturaEnAltura(cliente, especialista, direccion, metrosCuadrados, precioPorMetroCuadrado, piso, seguro, alqAndamios);
-        return 0;
+        int codigoUnico = generarCodigoUnico();
+        ServicioPinturaEnAltura servicio = new ServicioPinturaEnAltura(cliente, especialista, direccion, metrosCuadrados, precioPorMetroCuadrado, piso, seguro, alqAndamios);
+        registroServicios.put(codigoUnico,servicio);
+        return codigoUnico;
     }
 
     /**
@@ -218,8 +217,10 @@ public class EmpresaDeServicios {
             throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
         if (precioPorArtefacto <= 0)
             throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
-        ServicioGasistaInstalacion Servicio = new ServicioGasistaInstalacion(cliente,especialista,direccion,cantArtefactos,precioPorArtefacto);
-        return 0;
+        int codigoUnico=generarCodigoUnico();
+        ServicioGasistaInstalacion servicio = new ServicioGasistaInstalacion(cliente,especialista,direccion,cantArtefactos,precioPorArtefacto);
+        registroServicios.put(codigoUnico,servicio);
+        return codigoUnico;
     }
 
     /**
@@ -249,8 +250,10 @@ public class EmpresaDeServicios {
             throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
         if (precioPorArtefacto <= 0)
             throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
-        ServicioGasistaRevision Servicio = new ServicioGasistaRevision(cliente,especialista,direccion,cantArtefactos,precioPorArtefacto);
-        return 0;
+        int codigoUnico=generarCodigoUnico();
+        ServicioGasistaRevision servicio = new ServicioGasistaRevision(cliente,especialista,direccion,cantArtefactos,precioPorArtefacto);
+        registroServicios.put(codigoUnico,servicio);
+        return codigoUnico;
     }
 
     /**
