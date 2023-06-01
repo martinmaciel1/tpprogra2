@@ -202,6 +202,15 @@ public class EmpresaDeServicios {
      * menores o iguales a 0, se debe generar una excepción.
      */
     public int solicitarServicioGasistaInstalacion(int dni, int nroEspecialista, String direccion, int cantArtefactos, double precioPorArtefacto) {
+        Cliente cliente = buscarCliente(dni);
+        Especialista especialista= buscarEspecialista(nroEspecialista);
+        if(!especialista.consultarEspecialidad().equalsIgnoreCase("GasistaRevision"))
+            throw new RuntimeException("el especialista no esta capacitado para este servicio, su servicio es: " + especialista.consultarEspecialidad());
+        if (cantArtefactos <= 0)
+            throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
+        if (precioPorArtefacto <= 0)
+            throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
+        ServicioGasistaInstalacion Servicio = new ServicioGasistaInstalacion(cliente,especialista,direccion,cantArtefactos,precioPorArtefacto);
         return 0;
     }
 
@@ -227,9 +236,11 @@ public class EmpresaDeServicios {
         Especialista especialista = buscarEspecialista(nroEspecialista);
         if (!especialista.consultarEspecialidad().equalsIgnoreCase("GasistaRevision"))
             throw new RuntimeException("el especialista no esta capacitado para este servicio, su servicio es: " + especialista.consultarEspecialidad());
-        if (cantArtefactos <= 0) throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
-        if (precioPorArtefacto <= 0) throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
-        ServicioGasistaRevision Servicio = new ServicioGasistaRevision(cliente, especialista, direccion, cantArtefactos);
+        if (cantArtefactos <= 0)
+            throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
+        if (precioPorArtefacto <= 0)
+            throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
+        ServicioGasistaRevision Servicio = new ServicioGasistaRevision(cliente,especialista,direccion,cantArtefactos,precioPorArtefacto);
         return 0;
     }
 
