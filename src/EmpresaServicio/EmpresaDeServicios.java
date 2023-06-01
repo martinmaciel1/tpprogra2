@@ -359,7 +359,9 @@ public class EmpresaDeServicios {
      * Se debe realizar esta operación en O(1).
      */
     public void cambiarResponsable(int codServicio, int nroEspecialista) { // En O 0
-
+        RegistroServicio reg = buscarServicio(codServicio);
+        Especialista esp = buscarEspecialista(nroEspecialista);
+        reg.cambiarResponsable(esp);
     }
 
     /**
