@@ -281,9 +281,9 @@ public class EmpresaDeServicios {
      * Si un tipo de servicio no tuvo ninguna demanda, el valor de esa entrada debe
      * ser 0.
      */
-   /* public Map<String, Integer> cantidadDeServiciosRealizadosPorTipo() {
+    public Map<String, Integer> cantidadDeServiciosRealizadosPorTipo() {
         return null;
-    }*/
+    }
 
 
 
