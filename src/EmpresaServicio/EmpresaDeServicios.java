@@ -7,10 +7,7 @@ import java.util.Set;
 
 import persona.Cliente;
 import persona.Especialista;
-import servicio.RegistroServicio;
-import servicio.ServicioElectricista;
-import servicio.ServicioGasistaRevision;
-import servicio.ServicioPintura;
+import servicio.*;
 
 //import servicio.ServicioGasistaReparacion;
 //import servicio.ServicioGasistaRevision;
@@ -96,7 +93,7 @@ public class EmpresaDeServicios {
     public int solicitarServicioElectricidad(int dni, int nroEspecialista, String direccion, double precioPorHora, int horasTrabajadas) {
         Cliente cliente = buscarCliente(dni);
         Especialista especialista = buscarEspecialista(nroEspecialista);
-        if (!especialista.consultarEspecialidad().equalsIgnoreCase("electricista"))
+        if (!especialista.consultarEspecialidad().equalsIgnoreCase("Electricidad"))
             throw new RuntimeException("el especialista no esta capacitado para este servicio, su servicio es: " + especialista.consultarEspecialidad());
         if (precioPorHora <= 0) throw new RuntimeException("el precio hora no puede ser menor o igual a 0");
         if (horasTrabajadas <= 0) throw new RuntimeException("las horas trabajadas no pueden ser menor o igual a 0");
@@ -167,7 +164,21 @@ public class EmpresaDeServicios {
      * se debe generar una excepción.
      */
     public int solicitarServicioPintura(int dni, int nroEspecialista, String direccion, int metrosCuadrados, double precioPorMetroCuadrado, int piso, double seguro, double alqAndamios) {
-
+        Cliente cliente = buscarCliente(dni);
+        Especialista especialista= buscarEspecialista(nroEspecialista);
+        if(!especialista.consultarEspecialidad().equalsIgnoreCase("pinturaenaltura"))
+            throw new RuntimeException("el especialista no esta capacitado para este servicio, su servicio es: " + especialista.consultarEspecialidad());
+        if (metrosCuadrados <= 0)
+            throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
+        if (precioPorMetroCuadrado <= 0)
+            throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
+        if (piso <= 0)
+            throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
+        if (seguro <= 0)
+            throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
+        if (alqAndamios <= 0)
+            throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
+        ServicioPinturaEnAltura Servicio = new ServicioPinturaEnAltura(cliente,especialista,direccion,metrosCuadrados,precioPorMetroCuadrado,piso,seguro,alqAndamios);
         return 0;
     }
 

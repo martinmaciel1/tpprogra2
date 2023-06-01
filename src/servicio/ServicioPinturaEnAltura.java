@@ -3,15 +3,16 @@ import persona.Cliente;
 import persona.Especialista;
 
 public class ServicioPinturaEnAltura extends ServicioPintura{
-    private final double alquilerAndamios;
-    private final double costoSeguro;
-    private final int altura;
+    private double alquilerAndamios;
+    private double costoSeguro;
+    private int piso;
 
-    public ServicioPinturaEnAltura(Cliente cliente, Especialista especialista, String domicilio, int mtrsCuadrados, double precioMtrCuadrado, int altura) {
+    public ServicioPinturaEnAltura(Cliente cliente, Especialista especialista, String domicilio, int mtrsCuadrados, double precioMtrCuadrado, int piso,double seguro,double alqAndamios) {
         super(cliente, especialista, domicilio, mtrsCuadrados, precioMtrCuadrado);
-        alquilerAndamios = 500;
-        costoSeguro = 1500;
-        this.altura = altura;
+        this.alquilerAndamios = alqAndamios;
+        this.costoSeguro = seguro;
+        this.piso = piso;
+
     }
 
     public double consultarAlguilerAndamios() {
@@ -22,12 +23,11 @@ public class ServicioPinturaEnAltura extends ServicioPintura{
         return costoSeguro;
     }
 
-    public int consultarAltura() {
-        return altura;
+    public int consultarPiso() {
+        return piso;
     }
-
     public boolean esMayorA5(){
-        return altura > 5;
+        return piso> 5;
     }
 
 }
