@@ -120,7 +120,7 @@ public class EmpresaDeServicios {
         if (precioPorHora <= 0) throw new RuntimeException("el precio hora no puede ser menor o igual a 0");
         if (horasTrabajadas <= 0) throw new RuntimeException("las horas trabajadas no pueden ser menor o igual a 0");
         int codigoUnico = generarCodigoUnico();
-        ServicioElectricista Servicio = new ServicioElectricista(cliente, especialista, direccion, precioPorHora, horasTrabajadas);
+        ServicioElectricista servicio = new ServicioElectricista(cliente, especialista, direccion, precioPorHora, horasTrabajadas);
         registroServicios.put(codigoUnico,servicio);
         return codigoUnico ;
     }
@@ -272,9 +272,15 @@ public class EmpresaDeServicios {
      * Se debe realizar esta operación en O(1).
      */
     public double finalizarServicio(int codServicio, double costoMateriales) {
+
         return 0;
     } // En O 0
-
+    private RegistroServicio buscarServicio(int codServicio){
+        if (registroServicios.containsKey(codServicio)){
+            return registroServicios.get(codServicio);
+        }else
+            throw new RuntimeException("no existe el servicio o no esta registrado");
+    }
     /**
      * Devuelve un diccionario cuya clave es el tipo de servicio y el valor es la
      * cantidad de servicios realizados de ese tipo.
