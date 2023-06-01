@@ -120,7 +120,7 @@ public class EmpresaDeServicios {
         if (precioPorHora <= 0) throw new RuntimeException("el precio hora no puede ser menor o igual a 0");
         if (horasTrabajadas <= 0) throw new RuntimeException("las horas trabajadas no pueden ser menor o igual a 0");
         int codigoUnico = generarCodigoUnico();
-        ServicioElectricista Servicio = new ServicioElectricista(cliente, especialista, direccion, precioPorHora, horasTrabajadas);
+        ServicioElectricista servicio = new ServicioElectricista(cliente, especialista, direccion, precioPorHora, horasTrabajadas);
         registroServicios.put(codigoUnico,servicio);
         return codigoUnico ;
     }
@@ -353,7 +353,9 @@ public class EmpresaDeServicios {
      * Se debe realizar esta operación en O(1).
      */
     public void cambiarResponsable(int codServicio, int nroEspecialista) { // En O 0
-
+        RegistroServicio reg = buscarServicio(codServicio);
+        Especialista esp = buscarEspecialista(nroEspecialista);
+        reg.cambiarResponsable(esp);
     }
 
     /**
