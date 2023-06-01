@@ -12,11 +12,24 @@ public class ServicioGasistaRevision extends ServicioGasista {
         this.precioPorArtefacto = precioPorArtefacto;
 
     }
+
     @Override  //falta aplicar descuento
     public double calcularCostoServicio() {
-        double preciofinal =precioPorArtefacto * super.cantArtefactos;
-        super.importeTotal= preciofinal;
-        return preciofinal;
+        if (super.cantArtefactos > 5) {
+            double descuento = (precioPorArtefacto * 10) / 100;
+            double preciofinal = (precioPorArtefacto * super.cantArtefactos) - descuento;
+            super.importeTotal = preciofinal;
+            return preciofinal;
+        } else if (super.cantArtefactos > 10) {
+            double descuento = (precioPorArtefacto * 15) / 100;
+            double preciofinal = (precioPorArtefacto * super.cantArtefactos) - descuento;
+            super.importeTotal = preciofinal;
+            return preciofinal;
+        } else {
+            double preciofinal = precioPorArtefacto * super.cantArtefactos;
+            super.importeTotal = preciofinal;
+            return preciofinal;
+        }
     }
 
     public double consultarPrecioPorArtefacto() {

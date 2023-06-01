@@ -110,7 +110,7 @@ public class EmpresaDeServiciosTest {
 		empresa.solicitarServicioGasistaRevision(dniClienteRegistrado, nroEspecialistaGasistaRevision, "bulevar 777", 1,
 				3200);
 	}
-/*
+
 	@Test(expected = RuntimeException.class)
 	public void solicitarServicioConNroEspecialidadInvalido_generaError() {
 		empresa.solicitarServicioPintura(dniClienteRegistrado, nroEspecialistaNuevo1, "otra Calle 871", 9, 2000);
@@ -161,7 +161,7 @@ public class EmpresaDeServiciosTest {
 		assertEquals(66800, empresa.facturacionTotalPorTipo(SERVICIO_ELECTRICIDAD), 0.01);
 	}
 
-	@Test
+/*	@Test
 	public void verificarFacturacionTotalEsperada() {
 		assertEquals(77400, empresa.facturacionTotal(), 0.01);
 	}

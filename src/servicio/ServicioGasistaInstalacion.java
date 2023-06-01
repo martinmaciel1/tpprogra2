@@ -11,7 +11,7 @@ public class ServicioGasistaInstalacion extends ServicioGasista {
         super(cliente, especialista, domicilio, cantArtefactos);
         this.precioPorArtefacto = precioPorArtefacto;
     }
-    @Override  //falta aplicar descuento
+    @Override
     public double calcularCostoServicio() {
         double preciofinal =precioPorArtefacto * super.cantArtefactos;
         super.importeTotal= preciofinal;

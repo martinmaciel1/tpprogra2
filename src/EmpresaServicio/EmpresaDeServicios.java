@@ -90,8 +90,9 @@ public class EmpresaDeServicios {
     private Especialista buscarEspecialista(int nroEspecialista) {
         if (registroEspecialistas.containsKey(nroEspecialista)) {
             return registroEspecialistas.get(nroEspecialista);
+        } else {
+            throw new RuntimeException("el especialista no esta registrado");
         }
-        throw new RuntimeException("el especialista no esta registrado");
     }
 
     private Cliente buscarCliente(int dni) {
@@ -216,7 +217,7 @@ public class EmpresaDeServicios {
     public int solicitarServicioGasistaInstalacion(int dni, int nroEspecialista, String direccion, int cantArtefactos, double precioPorArtefacto) {
         Cliente cliente = buscarCliente(dni);
         Especialista especialista = buscarEspecialista(nroEspecialista);
-        if (!especialista.consultarEspecialidad().equalsIgnoreCase("GasistaRevision"))
+        if (!especialista.consultarEspecialidad().equalsIgnoreCase("GasistaInstalacion"))
             throw new RuntimeException("el especialista no esta capacitado para este servicio, su servicio es: " + especialista.consultarEspecialidad());
         if (cantArtefactos <= 0) throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
         if (precioPorArtefacto <= 0) throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
@@ -274,15 +275,15 @@ public class EmpresaDeServicios {
      */
     public double finalizarServicio(int codServicio, double costoMateriales) {
         RegistroServicio servicio = buscarServicio(codServicio);
-
+        servicio.calcularCostoServicio();
         double precioServicio = servicio.consultarImporteTotal();
-        return precioServicio+costoMateriales;
+        return precioServicio + costoMateriales;
     } // En O 0
 
-    private RegistroServicio buscarServicio(int codServicio){
-        if (registroServicios.containsKey(codServicio)){
+    private RegistroServicio buscarServicio(int codServicio) {
+        if (registroServicios.containsKey(codServicio)) {
             return registroServicios.get(codServicio);
-        }else
+        } else
             throw new RuntimeException("no existe el servicio o no esta registrado");
     }
     /**
@@ -364,7 +365,11 @@ public class EmpresaDeServicios {
     public void cambiarResponsable(int codServicio, int nroEspecialista) { // En O 0
         RegistroServicio reg = buscarServicio(codServicio);
         Especialista esp = buscarEspecialista(nroEspecialista);
-        reg.cambiarResponsable(esp);
+        if (esp.consultarEspecialidad().equals(reg.consultarEspecialista().consultarEspecialidad()))
+            reg.cambiarResponsable(esp);
+        else {
+            throw new RuntimeException("el especialista asignado no puede realizar este trabajo, su especialidad es:"+esp.consultarEspecialidad());
+        }
     }
 
     /**

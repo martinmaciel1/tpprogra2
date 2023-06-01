@@ -34,6 +34,7 @@ public abstract class RegistroServicio {
     }
 
     public void cambiarResponsable(Especialista especialista) {
+
         this.especialista = especialista;
     }
 

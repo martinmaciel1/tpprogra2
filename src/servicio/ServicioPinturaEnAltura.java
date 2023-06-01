@@ -16,10 +16,17 @@ public class ServicioPinturaEnAltura extends ServicioPintura {
 
     }
     @Override
-    public double calcularCostoServicio() {  // faltan descuentos correspondientes
-        double preciofinal = (super.mtrsCuadrados*super.precioMtrCuadrado)+costoSeguro+alquilerAndamios;
-        super.importeTotal= preciofinal;
-        return preciofinal;
+    public double calcularCostoServicio() {
+        if (piso >= 5) {
+            double Andamiosaumento = alquilerAndamios + ((20 / alquilerAndamios) * 100);
+            double preciofinal = (super.mtrsCuadrados * super.precioMtrCuadrado) + costoSeguro + Andamiosaumento;
+            super.importeTotal = preciofinal;
+            return preciofinal;
+        } else {
+            double preciofinal = (super.mtrsCuadrados * super.precioMtrCuadrado) + costoSeguro + alquilerAndamios;
+            super.importeTotal = preciofinal;
+            return preciofinal;
+        }
     }
     public double consultarAlguilerAndamios() {
         return alquilerAndamios;
