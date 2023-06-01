@@ -13,13 +13,7 @@ public class EmpresaDeServicios {
     private HashMap<Integer, RegistroServicio> registroServicios;
 
     private Set<String> registroDeServiciosDisponibles;
-
-    private double facturacionPintura;
-    private double facturacionPinturaEnAltura;
-    private double facturacionElectricidad;
-    private double facturacionElectricidadRevision;
-    private double facturacionElectricidadInstalacion;
-
+    private HashMap<String, Double> registroFacturaciones;
     private int proximoIdServicio;
 
     public EmpresaDeServicios() {
@@ -32,11 +26,13 @@ public class EmpresaDeServicios {
         registroDeServiciosDisponibles.add("Pintura");
         registroDeServiciosDisponibles.add("PinturaEnAltura");
         registroDeServiciosDisponibles.add("Electricidad");
-        facturacionPintura = 0;
-        facturacionPinturaEnAltura = 0;
-        facturacionElectricidad = 0;
-        facturacionElectricidadRevision = 0;
-        facturacionElectricidadInstalacion = 0;
+        registroFacturaciones = new HashMap<String, Double>();
+        registroFacturaciones.put("GasistaInstalacion", 0D);
+        registroFacturaciones.put("GasistaRevision", 0D);
+        registroFacturaciones.put("Pintura", 0D);
+        registroFacturaciones.put("PinturaEnAltura", 0D);
+        registroFacturaciones.put("Electricidad", 0D);
+
         proximoIdServicio = 0;
     }
 
@@ -79,6 +75,9 @@ public class EmpresaDeServicios {
         Especialista nuevoEspecialista = new Especialista(nroEspecialista, nombre, telefono, especialidad);
         if (especialistaYaExiste(nuevoEspecialista.consultarNumEspecialista())) {
             throw new RuntimeException("el especialista ya existe");
+        }
+        if (!registroFacturaciones.containsKey(nuevoEspecialista.consultarEspecialidad())) {
+            throw new RuntimeException("la especialidad no es válida");
         }
         registroEspecialistas.put(nuevoEspecialista.consultarNumEspecialista(), nuevoEspecialista);
     }
@@ -277,7 +276,14 @@ public class EmpresaDeServicios {
         RegistroServicio servicio = buscarServicio(codServicio);
         servicio.calcularCostoServicio();
         double precioServicio = servicio.consultarImporteTotal();
-        return precioServicio + costoMateriales;
+        precioServicio += costoMateriales;
+
+        String tipoServicio = servicio.consultarEspecialista().consultarEspecialidad();
+        double facturacionTipo = registroFacturaciones.get(tipoServicio);
+        facturacionTipo += precioServicio;
+        registroFacturaciones.put(tipoServicio, facturacionTipo);
+
+        return precioServicio;
     } // En O 0
 
     private RegistroServicio buscarServicio(int codServicio) {
@@ -285,6 +291,13 @@ public class EmpresaDeServicios {
             return registroServicios.get(codServicio);
         } else
             throw new RuntimeException("no existe el servicio o no esta registrado");
+    }
+
+    private double buscarFacturacion(String tipoServicio) {
+        if (registroFacturaciones.containsKey(tipoServicio)) {
+            return registroFacturaciones.get(tipoServicio);
+        }
+        throw new RuntimeException("no existe el tipo de servicio o no esta registrado");
     }
     /**
      * Devuelve un diccionario cuya clave es el tipo de servicio y el valor es la
@@ -305,43 +318,8 @@ public class EmpresaDeServicios {
      * Se debe realizar esta operación en O(1).
      */
     public double facturacionTotalPorTipo(String tipoServicio) {
-        if (tipoServicio.equals("Pintura")) {
-            return consultarFacturacionPintura();
-        }
-        if (tipoServicio.equals("PinturaEnAltura")) {
-            consultarFacturacionPinturaEnAltura();
-        }
-        if (tipoServicio.equals("Electricidad")) {
-            return consultarFacturacionElectricidad();
-        }
-        if (tipoServicio.equals("GasistaInstalacion")) {
-            return consultarFacturacionGasistaInstalacion();
-        }
-        if (tipoServicio.equals("GasistaReparacion")) {
-            return consultarFacturacionGasistaRevision();
-        }
-        return 0;
+        return buscarFacturacion(tipoServicio);
     } // En O 0
-
-    public double consultarFacturacionGasistaInstalacion() {
-        return facturacionElectricidadInstalacion;
-    }
-
-    public double consultarFacturacionGasistaRevision() {
-        return facturacionElectricidadRevision;
-    }
-
-    public double consultarFacturacionPintura() {
-        return facturacionPintura;
-    }
-
-    public double consultarFacturacionPinturaEnAltura() {
-        return facturacionPinturaEnAltura;
-    }
-
-    public double consultarFacturacionElectricidad() {
-        return facturacionElectricidad;
-    }
 
 
     /**
@@ -349,7 +327,11 @@ public class EmpresaDeServicios {
      * realizó la empresa.
      */
     public double facturacionTotal() {
-        return consultarFacturacionGasistaRevision() + consultarFacturacionGasistaInstalacion() + consultarFacturacionElectricidad() + consultarFacturacionPintura() + consultarFacturacionPinturaEnAltura();
+        double ret = 0;
+        for (double facturacion : registroFacturaciones.values()) {
+            ret += facturacion;
+        }
+        return ret;
     }
 
     /**
@@ -368,7 +350,7 @@ public class EmpresaDeServicios {
         if (esp.consultarEspecialidad().equals(reg.consultarEspecialista().consultarEspecialidad()))
             reg.cambiarResponsable(esp);
         else {
-            throw new RuntimeException("el especialista asignado no puede realizar este trabajo, su especialidad es:"+esp.consultarEspecialidad());
+            throw new RuntimeException("el especialista asignado no puede realizar este trabajo, su especialidad es:" + esp.consultarEspecialidad());
         }
     }
 
@@ -390,14 +372,24 @@ public class EmpresaDeServicios {
             RegistroServicio val = entry.getValue();
             int key = entry.getKey();
             if (val.consultarEspecialista().consultarNumEspecialista() == nroEspecialista) {
-                sb.append(" + [ ").append(key).append(" - ").append(val.consultarEspecialista().consultarEspecialidad()).append(val.consultarDireccion()).append("\n");
+                sb.append(" + [ ").append(key).append(" - ").append(val.consultarEspecialista().consultarEspecialidad()).append(" ] ").append(val.consultarDireccion()).append("\n");
             }
         }
         return sb.toString();
     }
 
     public Map<String, Integer> cantidadDeServiciosRealizadosPorTipo() {
-
-        return null;
+        Map<String, Integer> ret = new HashMap<>();
+        for (String key : registroFacturaciones.keySet()) {
+            ret.put(key, 0);
+        }
+        for (RegistroServicio reg : registroServicios.values()) {
+            if (reg.servicioTerminado()) {
+                String tipo = reg.consultarEspecialista().consultarEspecialidad();
+                int cantServiciosTipo = ret.get(tipo);
+                ret.put(tipo, cantServiciosTipo + 1);
+            }
+        }
+        return ret;
     }
 }
