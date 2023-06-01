@@ -98,11 +98,11 @@ public class EmpresaDeServiciosTest {
 		empresa.registrarEspecialista(nroEspecialistaElectrisista, "clienteX", "1146453465", SERVICIO_GASISTA_REVISION);
 	}
 
-	/*@Test(expected = RuntimeException.class)
+	@Test(expected = RuntimeException.class)
 	public void registrarEspecialistaDeTipoDesconocido_generaError() {
 		empresa.registrarEspecialista(nroEspecialistaNuevo1, "EspecialistaServicioDesconocido", "1146453465",
 				"Carpintero");
-	}*/
+	}
 
 	@Test
 	public void solicitarServicios_finalizaOK() {
@@ -161,7 +161,7 @@ public class EmpresaDeServiciosTest {
 		assertEquals(66800, empresa.facturacionTotalPorTipo(SERVICIO_ELECTRICIDAD), 0.01);
 	}
 
-/*	@Test
+	@Test
 	public void verificarFacturacionTotalEsperada() {
 		assertEquals(77400, empresa.facturacionTotal(), 0.01);
 	}
@@ -172,5 +172,5 @@ public class EmpresaDeServiciosTest {
 				+ "bulevar 333\n";
 		assertEquals(esperado, empresa.listadoServiciosAtendidosPorEspecialista(nroEspecialistaGasistaInstalacion));
 	}
-*/
+
 }
