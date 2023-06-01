@@ -21,13 +21,16 @@ public abstract class RegistroServicio {
     public String consultarDireccion() {
         return direccion;
     }
-    public boolean servicioTerminado(){
+
+    public boolean servicioTerminado() {
         return importeTotal != 0;
     }
+
     public double consultarImporteTotal() {
         return importeTotal;
     }
-    public void cambiarResponsable(Especialista especialista){
+
+    public void cambiarResponsable(Especialista especialista) {
         this.especialista = especialista;
     }
 

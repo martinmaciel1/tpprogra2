@@ -16,6 +16,12 @@ public class EmpresaDeServicios {
 
     private Set<String> registroDeServiciosDisponibles;
 
+    private double facturacionPintura;
+    private double facturacionPinturaEnAltura;
+    private double facturacionElectricidad;
+    private double facturacionElectricidadRevision;
+    private double facturacionElectricidadInstalacion;
+
     public EmpresaDeServicios() {
         registroEspecialistas = new HashMap<Integer, Especialista>();
         registroClientes = new HashMap<Integer, Cliente>();
@@ -26,6 +32,11 @@ public class EmpresaDeServicios {
         registroDeServiciosDisponibles.add("Pintura");
         registroDeServiciosDisponibles.add("PinturaEnAltura");
         registroDeServiciosDisponibles.add("Electricidad");
+        facturacionPintura = 0;
+        facturacionPinturaEnAltura = 0;
+        facturacionElectricidad = 0;
+        facturacionElectricidadRevision = 0;
+        facturacionElectricidadInstalacion = 0;
 
     }
 
@@ -140,14 +151,12 @@ public class EmpresaDeServicios {
     //1
     public int solicitarServicioPintura(int dni, int nroEspecialista, String direccion, int metrosCuadrados, double precioPorMetroCuadrado) {
         Cliente cliente = buscarCliente(dni);
-        Especialista especialista= buscarEspecialista(nroEspecialista);
-        if(!especialista.consultarEspecialidad().equalsIgnoreCase("Pintura"))
+        Especialista especialista = buscarEspecialista(nroEspecialista);
+        if (!especialista.consultarEspecialidad().equalsIgnoreCase("Pintura"))
             throw new RuntimeException("el especialista no esta capacitado para este servicio, su servicio es: " + especialista.consultarEspecialidad());
-        if (metrosCuadrados <= 0)
-            throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
-        if (precioPorMetroCuadrado <= 0)
-            throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
-        ServicioPintura Servicio = new ServicioPintura(cliente,especialista,direccion,metrosCuadrados,precioPorMetroCuadrado);
+        if (metrosCuadrados <= 0) throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
+        if (precioPorMetroCuadrado <= 0) throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
+        ServicioPintura Servicio = new ServicioPintura(cliente, especialista, direccion, metrosCuadrados, precioPorMetroCuadrado);
         return 0;
     }
     //2
@@ -172,20 +181,15 @@ public class EmpresaDeServicios {
      */
     public int solicitarServicioPintura(int dni, int nroEspecialista, String direccion, int metrosCuadrados, double precioPorMetroCuadrado, int piso, double seguro, double alqAndamios) {
         Cliente cliente = buscarCliente(dni);
-        Especialista especialista= buscarEspecialista(nroEspecialista);
-        if(!especialista.consultarEspecialidad().equalsIgnoreCase("pinturaenaltura"))
+        Especialista especialista = buscarEspecialista(nroEspecialista);
+        if (!especialista.consultarEspecialidad().equalsIgnoreCase("pinturaenaltura"))
             throw new RuntimeException("el especialista no esta capacitado para este servicio, su servicio es: " + especialista.consultarEspecialidad());
-        if (metrosCuadrados <= 0)
-            throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
-        if (precioPorMetroCuadrado <= 0)
-            throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
-        if (piso <= 0)
-            throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
-        if (seguro <= 0)
-            throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
-        if (alqAndamios <= 0)
-            throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
-        ServicioPinturaEnAltura Servicio = new ServicioPinturaEnAltura(cliente,especialista,direccion,metrosCuadrados,precioPorMetroCuadrado,piso,seguro,alqAndamios);
+        if (metrosCuadrados <= 0) throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
+        if (precioPorMetroCuadrado <= 0) throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
+        if (piso <= 0) throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
+        if (seguro <= 0) throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
+        if (alqAndamios <= 0) throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
+        ServicioPinturaEnAltura Servicio = new ServicioPinturaEnAltura(cliente, especialista, direccion, metrosCuadrados, precioPorMetroCuadrado, piso, seguro, alqAndamios);
         return 0;
     }
 
@@ -238,8 +242,8 @@ public class EmpresaDeServicios {
     //5
     public int solicitarServicioGasistaRevision(int dni, int nroEspecialista, String direccion, int cantArtefactos, double precioPorArtefacto) {
         Cliente cliente = buscarCliente(dni);
-        Especialista especialista= buscarEspecialista(nroEspecialista);
-        if(!especialista.consultarEspecialidad().equalsIgnoreCase("GasistaRevision"))
+        Especialista especialista = buscarEspecialista(nroEspecialista);
+        if (!especialista.consultarEspecialidad().equalsIgnoreCase("GasistaRevision"))
             throw new RuntimeException("el especialista no esta capacitado para este servicio, su servicio es: " + especialista.consultarEspecialidad());
         if (cantArtefactos <= 0)
             throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
@@ -288,17 +292,51 @@ public class EmpresaDeServicios {
      * Se debe realizar esta operación en O(1).
      */
     public double facturacionTotalPorTipo(String tipoServicio) {
+        if(tipoServicio.equals("Pintura")){
+            return consultarFacturacionPintura();
+        }
+        if(tipoServicio.equals("PinturaEnAltura")){
+            consultarFacturacionPinturaEnAltura();
+        }
+        if(tipoServicio.equals("Electricidad")){
+            return consultarFacturacionElectricidad();
+        }
+        if(tipoServicio.equals("GasistaInstalacion")){
+            return consultarFacturacionGasistaInstalacion();
+        }
+        if(tipoServicio.equals("GasistaReparacion")){
+            return consultarFacturacionGasistaRevision();
+        }
         return 0;
     } // En O 0
+
+    public double consultarFacturacionGasistaInstalacion() {
+        return facturacionElectricidadInstalacion;
+    }
+
+    public double consultarFacturacionGasistaRevision() {
+        return facturacionElectricidadRevision;
+    }
+
+    public double consultarFacturacionPintura() {
+        return facturacionPintura;
+    }
+
+    public double consultarFacturacionPinturaEnAltura() {
+        return facturacionPinturaEnAltura;
+    }
+
+    public double consultarFacturacionElectricidad() {
+        return facturacionElectricidad;
+    }
+
 
     /**
      * Devuelve la suma del precio facturado de todos los servicios finalizados que
      * realizó la empresa.
      */
     public double facturacionTotal() {
-
-
-        return 0;
+        return consultarFacturacionGasistaRevision() + consultarFacturacionGasistaInstalacion() + consultarFacturacionElectricidad() + consultarFacturacionPintura() + consultarFacturacionPinturaEnAltura();
     }
 
     /**
