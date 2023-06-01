@@ -1,18 +1,14 @@
 package EmpresaServicio;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 import persona.Cliente;
 import persona.Especialista;
 import servicio.*;
 
-//import servicio.ServicioGasistaReparacion;
-//import servicio.ServicioGasistaRevision;
-//import servicio.ServicioPintura;
-//import servicio.ServicioPinturaEnAltura;
 public class EmpresaDeServicios {
     private HashMap<Integer, Especialista> registroEspecialistas;
     private HashMap<Integer, Cliente> registroClientes;
@@ -74,6 +70,18 @@ public class EmpresaDeServicios {
     private boolean especialistaYaExiste(int NumEspecialista) {
         return (registroEspecialistas.containsKey(NumEspecialista));
     }
+    private Especialista buscarEspecialista(int nroEspecialista) {
+        if (registroEspecialistas.containsKey(nroEspecialista)) {
+            return registroEspecialistas.get(nroEspecialista);
+        }
+        throw new RuntimeException("el especialista no esta registrado");
+    }
+    private Cliente buscarCliente(int dni) {
+        if (registroClientes.containsKey(dni)) {
+            return registroClientes.get(dni);
+        }
+        throw new RuntimeException("el cliente no esta registrado");
+    }
 
     /**
      * Se registra la prestación de un servicio de tipo Electricidad en el sistema
@@ -90,6 +98,7 @@ public class EmpresaDeServicios {
      * Si el precio por hora o las horas de trabajo estimado son menores o
      * iguales a 0, se debe generar una excepción.
      */
+    //3
     public int solicitarServicioElectricidad(int dni, int nroEspecialista, String direccion, double precioPorHora, int horasTrabajadas) {
         Cliente cliente = buscarCliente(dni);
         Especialista especialista = buscarEspecialista(nroEspecialista);
@@ -97,23 +106,20 @@ public class EmpresaDeServicios {
             throw new RuntimeException("el especialista no esta capacitado para este servicio, su servicio es: " + especialista.consultarEspecialidad());
         if (precioPorHora <= 0) throw new RuntimeException("el precio hora no puede ser menor o igual a 0");
         if (horasTrabajadas <= 0) throw new RuntimeException("las horas trabajadas no pueden ser menor o igual a 0");
+        String codigoUnico = GenerarCodigoUnico(3);
         ServicioElectricista Servicio = new ServicioElectricista(cliente, especialista, direccion, precioPorHora, horasTrabajadas);
-        return 0;
+        registroServicios.put(codigoUnico,Servicio);
+        return ;
     }
 
-    private Especialista buscarEspecialista(int nroEspecialista) {
-        if (registroEspecialistas.containsKey(nroEspecialista)) {
-            return registroEspecialistas.get(nroEspecialista);
-        }
-        throw new RuntimeException("el especialista no esta registrado");
+    private String GenerarCodigoUnico(int servicio){
+        LocalDateTime fecha = LocalDateTime.now();
+        StringBuilder a = new StringBuilder();
+        a.append(codigoServicio).append(fecha.hashCode());
+        return String.valueOf(a);
     }
 
-    private Cliente buscarCliente(int dni) {
-        if (registroClientes.containsKey(dni)) {
-            return registroClientes.get(dni);
-        }
-        throw new RuntimeException("el cliente no esta registrado");
-    }
+
 
     /**
      * Se registra la prestación de un servicio de tipo Pintura en el sistema
@@ -131,6 +137,7 @@ public class EmpresaDeServicios {
      * iguales a 0, se debe generar una excepción.
      * 5 de 7
      */
+    //1
     public int solicitarServicioPintura(int dni, int nroEspecialista, String direccion, int metrosCuadrados, double precioPorMetroCuadrado) {
         Cliente cliente = buscarCliente(dni);
         Especialista especialista= buscarEspecialista(nroEspecialista);
@@ -143,7 +150,7 @@ public class EmpresaDeServicios {
         ServicioPintura Servicio = new ServicioPintura(cliente,especialista,direccion,metrosCuadrados,precioPorMetroCuadrado);
         return 0;
     }
-
+    //2
     /**
      * Se registra la prestación de un servicio de tipo PinturaEnAltura en el
      * sistema ingresando los datos necesarios para solicitar un servicio y además:
@@ -197,6 +204,7 @@ public class EmpresaDeServicios {
      * Si el precio de instalación o la cantidad de artefactos a instalar son
      * menores o iguales a 0, se debe generar una excepción.
      */
+    //4
     public int solicitarServicioGasistaInstalacion(int dni, int nroEspecialista, String direccion, int cantArtefactos, double precioPorArtefacto) {
         Cliente cliente = buscarCliente(dni);
         Especialista especialista= buscarEspecialista(nroEspecialista);
@@ -227,6 +235,7 @@ public class EmpresaDeServicios {
      * Si el precio de instalación o la cantidad de artefactos a revisar son
      * menores o iguales a 0, se debe generar una excepción.
      */
+    //5
     public int solicitarServicioGasistaRevision(int dni, int nroEspecialista, String direccion, int cantArtefactos, double precioPorArtefacto) {
         Cliente cliente = buscarCliente(dni);
         Especialista especialista= buscarEspecialista(nroEspecialista);
@@ -257,7 +266,7 @@ public class EmpresaDeServicios {
      */
     public double finalizarServicio(int codServicio, double costoMateriales) {
         return 0;
-    }
+    } // En O 0
 
     /**
      * Devuelve un diccionario cuya clave es el tipo de servicio y el valor es la
@@ -269,6 +278,8 @@ public class EmpresaDeServicios {
         return null;
     }*/
 
+
+
     /**
      * Devuelve la suma del precio facturado de todos los servicios finalizados que
      * son del tipo pasado por parámetro.
@@ -278,7 +289,7 @@ public class EmpresaDeServicios {
      */
     public double facturacionTotalPorTipo(String tipoServicio) {
         return 0;
-    }
+    } // En O 0
 
     /**
      * Devuelve la suma del precio facturado de todos los servicios finalizados que
@@ -300,7 +311,8 @@ public class EmpresaDeServicios {
      * <p>
      * Se debe realizar esta operación en O(1).
      */
-    public void cambiarResponsable(int codServicio, int nroEspecialista) {
+    public void cambiarResponsable(int codServicio, int nroEspecialista) { // En O 0
+
     }
 
     /**
