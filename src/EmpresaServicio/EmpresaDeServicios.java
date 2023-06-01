@@ -20,7 +20,8 @@ public class EmpresaDeServicios {
     private double facturacionElectricidadRevision;
     private double facturacionElectricidadInstalacion;
 
-    private int proximoIdServicio ;
+    private int proximoIdServicio;
+
     public EmpresaDeServicios() {
         registroEspecialistas = new HashMap<Integer, Especialista>();
         registroClientes = new HashMap<Integer, Cliente>();
@@ -38,10 +39,12 @@ public class EmpresaDeServicios {
         facturacionElectricidadInstalacion = 0;
         proximoIdServicio = 0;
     }
-    private int generarCodigoUnico(){
+
+    private int generarCodigoUnico() {
         proximoIdServicio++;
         return proximoIdServicio;
     }
+
     /**
      * Registra un nuevo cliente en el sistema dado su:
      * - dni,
@@ -83,12 +86,14 @@ public class EmpresaDeServicios {
     private boolean especialistaYaExiste(int NumEspecialista) {
         return (registroEspecialistas.containsKey(NumEspecialista));
     }
+
     private Especialista buscarEspecialista(int nroEspecialista) {
         if (registroEspecialistas.containsKey(nroEspecialista)) {
             return registroEspecialistas.get(nroEspecialista);
         }
         throw new RuntimeException("el especialista no esta registrado");
     }
+
     private Cliente buscarCliente(int dni) {
         if (registroClientes.containsKey(dni)) {
             return registroClientes.get(dni);
@@ -121,10 +126,9 @@ public class EmpresaDeServicios {
         if (horasTrabajadas <= 0) throw new RuntimeException("las horas trabajadas no pueden ser menor o igual a 0");
         int codigoUnico = generarCodigoUnico();
         ServicioElectricista servicio = new ServicioElectricista(cliente, especialista, direccion, precioPorHora, horasTrabajadas);
-        registroServicios.put(codigoUnico,servicio);
-        return codigoUnico ;
+        registroServicios.put(codigoUnico, servicio);
+        return codigoUnico;
     }
-
 
 
     /**
@@ -153,10 +157,11 @@ public class EmpresaDeServicios {
         if (precioPorMetroCuadrado <= 0) throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
         int codigoUnico = generarCodigoUnico();
         ServicioPintura servicio = new ServicioPintura(cliente, especialista, direccion, metrosCuadrados, precioPorMetroCuadrado);
-        registroServicios.put(codigoUnico,servicio);
+        registroServicios.put(codigoUnico, servicio);
         return codigoUnico;
     }
     //2
+
     /**
      * Se registra la prestación de un servicio de tipo PinturaEnAltura en el
      * sistema ingresando los datos necesarios para solicitar un servicio y además:
@@ -188,7 +193,7 @@ public class EmpresaDeServicios {
         if (alqAndamios <= 0) throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
         int codigoUnico = generarCodigoUnico();
         ServicioPinturaEnAltura servicio = new ServicioPinturaEnAltura(cliente, especialista, direccion, metrosCuadrados, precioPorMetroCuadrado, piso, seguro, alqAndamios);
-        registroServicios.put(codigoUnico,servicio);
+        registroServicios.put(codigoUnico, servicio);
         return codigoUnico;
     }
 
@@ -210,16 +215,14 @@ public class EmpresaDeServicios {
     //4
     public int solicitarServicioGasistaInstalacion(int dni, int nroEspecialista, String direccion, int cantArtefactos, double precioPorArtefacto) {
         Cliente cliente = buscarCliente(dni);
-        Especialista especialista= buscarEspecialista(nroEspecialista);
-        if(!especialista.consultarEspecialidad().equalsIgnoreCase("GasistaRevision"))
+        Especialista especialista = buscarEspecialista(nroEspecialista);
+        if (!especialista.consultarEspecialidad().equalsIgnoreCase("GasistaRevision"))
             throw new RuntimeException("el especialista no esta capacitado para este servicio, su servicio es: " + especialista.consultarEspecialidad());
-        if (cantArtefactos <= 0)
-            throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
-        if (precioPorArtefacto <= 0)
-            throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
-        int codigoUnico=generarCodigoUnico();
-        ServicioGasistaInstalacion servicio = new ServicioGasistaInstalacion(cliente,especialista,direccion,cantArtefactos,precioPorArtefacto);
-        registroServicios.put(codigoUnico,servicio);
+        if (cantArtefactos <= 0) throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
+        if (precioPorArtefacto <= 0) throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
+        int codigoUnico = generarCodigoUnico();
+        ServicioGasistaInstalacion servicio = new ServicioGasistaInstalacion(cliente, especialista, direccion, cantArtefactos, precioPorArtefacto);
+        registroServicios.put(codigoUnico, servicio);
         return codigoUnico;
     }
 
@@ -246,13 +249,11 @@ public class EmpresaDeServicios {
         Especialista especialista = buscarEspecialista(nroEspecialista);
         if (!especialista.consultarEspecialidad().equalsIgnoreCase("GasistaRevision"))
             throw new RuntimeException("el especialista no esta capacitado para este servicio, su servicio es: " + especialista.consultarEspecialidad());
-        if (cantArtefactos <= 0)
-            throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
-        if (precioPorArtefacto <= 0)
-            throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
-        int codigoUnico=generarCodigoUnico();
-        ServicioGasistaRevision servicio = new ServicioGasistaRevision(cliente,especialista,direccion,cantArtefactos,precioPorArtefacto);
-        registroServicios.put(codigoUnico,servicio);
+        if (cantArtefactos <= 0) throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
+        if (precioPorArtefacto <= 0) throw new RuntimeException("metros cuadrados no pueden ser menor o igual a 0");
+        int codigoUnico = generarCodigoUnico();
+        ServicioGasistaRevision servicio = new ServicioGasistaRevision(cliente, especialista, direccion, cantArtefactos, precioPorArtefacto);
+        registroServicios.put(codigoUnico, servicio);
         return codigoUnico;
     }
 
@@ -286,7 +287,6 @@ public class EmpresaDeServicios {
     }
 
 
-
     /**
      * Devuelve la suma del precio facturado de todos los servicios finalizados que
      * son del tipo pasado por parámetro.
@@ -295,19 +295,19 @@ public class EmpresaDeServicios {
      * Se debe realizar esta operación en O(1).
      */
     public double facturacionTotalPorTipo(String tipoServicio) {
-        if(tipoServicio.equals("Pintura")){
+        if (tipoServicio.equals("Pintura")) {
             return consultarFacturacionPintura();
         }
-        if(tipoServicio.equals("PinturaEnAltura")){
+        if (tipoServicio.equals("PinturaEnAltura")) {
             consultarFacturacionPinturaEnAltura();
         }
-        if(tipoServicio.equals("Electricidad")){
+        if (tipoServicio.equals("Electricidad")) {
             return consultarFacturacionElectricidad();
         }
-        if(tipoServicio.equals("GasistaInstalacion")){
+        if (tipoServicio.equals("GasistaInstalacion")) {
             return consultarFacturacionGasistaInstalacion();
         }
-        if(tipoServicio.equals("GasistaReparacion")){
+        if (tipoServicio.equals("GasistaReparacion")) {
             return consultarFacturacionGasistaRevision();
         }
         return 0;
@@ -371,7 +371,15 @@ public class EmpresaDeServicios {
      * devolver un String vacío.
      */
     public String listadoServiciosAtendidosPorEspecialista(int nroEspecialista) {
-        return null;
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<Integer, RegistroServicio> entry : registroServicios.entrySet()) {
+            RegistroServicio val = entry.getValue();
+            int key = entry.getKey();
+            if (val.consultarEspecialista().consultarNumEspecialista() == nroEspecialista) {
+                sb.append(" + [ ").append(key).append(" - ").append(val.consultarEspecialista().consultarEspecialidad()).append(val.consultarDireccion()).append("\n");
+            }
+        }
+        return sb.toString();
     }
 
     public Map<String, Integer> cantidadDeServiciosRealizadosPorTipo() {
